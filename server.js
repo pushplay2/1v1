@@ -7,17 +7,11 @@ import config from "./config/config";
 const server = express();
 
 // Подключенные модули
-
 server.get('/', function (req, res) 
 {
     console.log("is get??");
     // Параметры для отправки в функцию
     toSend("users.get", "user_ids=213254345", config.token, "5.101");
-});
-
-server.post('/', function (req, res)
-{
-    console.log("Is data control?");
 });
 
 async function toSend(METHOD_NAME, PARAMETERS, ACCESS_TOKEN, V)
