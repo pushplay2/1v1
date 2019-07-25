@@ -1,61 +1,42 @@
-import express from "express";
-import request from "request";
+//Импортируем необходимые зависимости(модули)
+import express from 'express';
+import morgan from 'morgan';
+import path from 'path';
+import fs from 'fs';
+import bodyParser from 'body-parser';
 
 //Импортируем настройки сервера;
 var config = require('./config');
 
-const server = express();
+//Основной контроллер
+import * as basiccontroller from './controllers/General';
 
-// Подключенные модули
-server.get('/', function (req, res) 
-{
-    console.log("is get??");
-    // Параметры для отправки в функцию
-    toSend("users.get", "user_ids=213254345", config.get('token'), "5.101");
-});
+//Создаем экземпляр приложения 
+var app = express();
 
-server.post('/', function (req, res) 
-{
-    // Параметры для отправки в функцию
-    res.send("1c606219");
-});
+//Настройки сервера перед первым запуском
+app.use(bodyParser.json()); //req.body
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('dev')); // log every request to the console
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
-statusSet();
+// Конфигурируем фабрику маршрутизации
+require('./approutes/routes')(app);
 
-async function statusSet()
-{
-    toSend("groups.enableOnline", "group_id=184791242", config.get('token'), "5.101")
-}
-
-async function toSend(METHOD_NAME, PARAMETERS, ACCESS_TOKEN, V)
-{
-    // Стандартные опции для запроса
-    var options = {
-        url: 'https://api.vk.com/method/' + 
-        METHOD_NAME + '?' + PARAMETERS + '&access_token=' + ACCESS_TOKEN +
-        '&v=' + V
-    };
-
-    // Работа модуля response
-    function callback(error, response, body) 
-    {
-        if (!error && response.statusCode == 200) // Если успешно, код 200.
-        {
-            let data = JSON.parse(body);
-            console.log("DATA: " + JSON.stringify(data.response));
-        } else // Если ошибка, смотри ошибку
-        {
-            console.log("error: " + error);
-            console.log("status: " + response.statusCode);
-        }
-    }
-
-    // Запускаем запрос на сайт
-    request(options, callback);
-}
-
+//Обьявляем экземпляр сервера
+var server = require('http').createServer(app)
 
 server.listen(config.get('port'), function () 
 {
-    console.log("Server listen port: "+config.get('port'));
+    console.log(`Server running at http://${config.get('hostname')}:${config.get('port')}/`);
+    console.log('Run test method!');
+    //console.log(`${config.get('api_vk_url')}${'status.get'}?group_id=${config.get('gid')}'&access_token='${config.get('token')}'&v='${config.get('version_API')}`);
+    //Отправка запроса
+    //basiccontroller.toSend("status.get", "group_id="+config.get('gid'), config.get('token'), config.get('version_API'));
+    basiccontroller.toSend("users.get", "user_ids=213254345", config.get('token'), config.get('version_API')); //WORK !!!!
 });
+
+//DIMAS
+//"token" : "7a214ca8531508a5ec865135a988f76948c28158c40952558ba7747c61f132c3312d31db9becd5d0d34af",
+//NIKITA
+//"token" : "1ed49f6afd7c51f6867152c104568db5b62813413608992a0d48d879e9c21eb959031ebc644751e72fede",
