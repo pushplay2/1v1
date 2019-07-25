@@ -1,8 +1,8 @@
-"use strict"
 import express from "express";
 import request from "request";
 
-import config from "./config/config";
+//Импортируем настройки сервера;
+var config = require('./config');
 
 const server = express();
 
@@ -11,8 +11,21 @@ server.get('/', function (req, res)
 {
     console.log("is get??");
     // Параметры для отправки в функцию
-    toSend("users.get", "user_ids=213254345", config.token, "5.101");
+    toSend("users.get", "user_ids=213254345", config.get('token'), "5.101");
 });
+
+server.post('/', function (req, res) 
+{
+    // Параметры для отправки в функцию
+    res.send("1c606219");
+});
+
+statusSet();
+
+async function statusSet()
+{
+    toSend("groups.enableOnline", "group_id=184791242", config.get('token'), "5.101")
+}
 
 async function toSend(METHOD_NAME, PARAMETERS, ACCESS_TOKEN, V)
 {
@@ -42,7 +55,7 @@ async function toSend(METHOD_NAME, PARAMETERS, ACCESS_TOKEN, V)
 }
 
 
-server.listen(config.port, function () 
+server.listen(config.get('port'), function () 
 {
-    console.log("Server listen port: 3000");
+    console.log("Server listen port: "+config.get('port'));
 });
