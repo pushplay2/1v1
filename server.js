@@ -1,31 +1,29 @@
+'use strict'
 //Импортируем необходимые зависимости(модули)
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
 
 //Импортируем настройки сервера;
-var config = require('./config');
+import config from './config/config.json';
 
 //Основной контроллер
-import * as basiccontroller from './controllers/General';
+import * as basicController from './controllers/general';
 
 //Создаем экземпляр приложения 
-var app = express();
+var server = express();
 
 //Настройки сервера перед первым запуском
-app.use(morgan('dev')); // log every request to the console
+server.use(morgan('dev')); // - Логирование
 
 // Конфигурируем фабрику маршрутизации
-require('./approutes/routes')(app);
+require('./approutes/routes')(server);
 
-//Обьявляем экземпляр сервера
-var server = require('http').createServer(app)
-
-server.listen(config.get('port'), function () 
+server.listen(config.port, function () 
 {
-    console.log(`Server running at http://${config.get('hostname')}:${config.get('port')}/`);
+    console.log(`Server running at http://${config.hostname}:${config.port}/`);
     console.log('Run test method!');
     //Отправка запроса
-    basiccontroller.toSend("status.get", "group_id="+config.get('gid'), config.get('token'), config.get('version_API'));
+    basicController.toSend("status.get", "group_id="+config.gid, config.token, config.version_API);
     //basiccontroller.toSend("users.get", "user_ids=213254345", config.get('token'), config.get('version_API')); //WORK !!!!
 });

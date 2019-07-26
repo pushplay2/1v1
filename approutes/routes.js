@@ -1,16 +1,16 @@
-/*Подключение серверных функция для каждого маршрута*/
-import * as basiccontroller from '../controllers/General';
+'use strict'
+/* Подключение серверных функция для каждого маршрута */
+import * as basicController from '../controllers/general';
 
 //Импортируем настройки сервера; 
-let config = require('../config');
+import config from '../config/config.json';
 
-//Остальные модули
+// Остальные модули
 import fs from 'fs';
 import path from 'path';
 
-//Фабрика для роутов
-module.exports = function(app) {
-
-    //
-    app.get('/', async function(req, res) { basiccontroller.TestRoute(req, res) });
+// Фабрика для роутов
+module.exports = function(app) 
+{
+    app.get('/', async function(req, res) { basicController.TestRoute(req, res) });
 };

@@ -1,8 +1,8 @@
-const request = require('request');
+'use stict'
+import request from 'request';
 
 //Импортируем настройки сервера;
-let config = require('../config');
-
+import config from '../config/config.json';
 
 //Обработчик метода ToSend
 export var toSend = async function(METHOD_NAME, PARAMETERS, ACCESS_TOKEN, V) {
@@ -12,7 +12,7 @@ export var toSend = async function(METHOD_NAME, PARAMETERS, ACCESS_TOKEN, V) {
  https://oauth.vk.com/blank.html#access_token=49bd962b34f4cf7340aae39657d84663c48cf95b79b351f16cf7b166c6413076c22543be873051e6c54d9&expires_in=86400&user_id=335342956
   */
 
-    let customurl = config.get('api_vk_url') + METHOD_NAME + '?' + PARAMETERS + '&access_token=' + ACCESS_TOKEN + '&v=' + V;
+    let customurl = config.api_vk_url + METHOD_NAME + '?' + PARAMETERS + '&access_token=' + ACCESS_TOKEN + '&v=' + V;
 
     request.get(customurl, { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }
