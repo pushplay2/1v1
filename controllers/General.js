@@ -4,13 +4,10 @@ import request from 'request';
 //Импортируем настройки сервера;
 import config from '../config/config.json';
 
+/// token key = 4d5dd1d3f351a2435f0c568c4b4c7c1d565ba1971e1b93d2d13ed6a690a92fd0c4e8503d567f3da81cd09
+
 //Обработчик метода ToSend
 export var toSend = async function(METHOD_NAME, PARAMETERS, ACCESS_TOKEN, V) {
- /*
- https://oauth.vk.com/authorize?client_id=7071471&display=page&redirect_uri=&scope=status&response_type=token&v=5.52
-
- https://oauth.vk.com/blank.html#access_token=49bd962b34f4cf7340aae39657d84663c48cf95b79b351f16cf7b166c6413076c22543be873051e6c54d9&expires_in=86400&user_id=335342956
-  */
 
     let customurl = config.api_vk_url + METHOD_NAME + '?' + PARAMETERS + '&access_token=' + ACCESS_TOKEN + '&v=' + V;
 
